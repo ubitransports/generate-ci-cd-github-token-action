@@ -1,0 +1,40 @@
+name: GH Action Token from Github App
+description: Generate Github App token from the Github App
+
+inputs:
+  app_id:
+    description: Github App ID
+    required: true
+  app_private_key:
+    description: Github App private key
+    required: true
+  repository_owner:
+    description: Repository owner
+    required: true
+
+outputs:
+  token:
+    description: GH Action Token
+    value: ${{ steps.generate-token.outputs.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Generate a Github App Token
+      id: generate-token
+      uses: actions/create-github-app-token@v2
+      with:
+        app-id: ${{ input.app_id }}
+        private-key: ${{ input.app_private_key }}
+        owner: ${{ input.repository_owner }}
+
+    - name: Setup GH Cli
+      shell: bash
+      run: |
+        sudo apt update && sudo apt install gh
+        gh auth setup-git
+        gh api octocat
+        git config --global user.name "${{ steps.generate-token.outputs.app-slug }}[bot]"
+        git config --global user.email "$(gh api '/users/${{ steps.generate-token.outputs.app-slug }}[bot]' --jq .id)+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com"
+      env:
+        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
