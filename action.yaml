@@ -24,9 +24,9 @@ runs:
       id: generate-token
       uses: actions/create-github-app-token@v2
       with:
-        app-id: ${{ input.app_id }}
-        private-key: ${{ input.app_private_key }}
-        owner: ${{ input.repository_owner }}
+        app-id: ${{ inputs.app_id }}
+        private-key: ${{ inputs.app_private_key }}
+        owner: ${{ inputs.repository_owner }}
 
     - name: Setup GH Cli
       shell: bash
