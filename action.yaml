@@ -24,7 +24,7 @@ runs:
       id: generate-token
       uses: actions/create-github-app-token@v3
       with:
-        app-id: ${{ inputs.app_id }}
+        client-id: ${{ inputs.app_id }}
         private-key: ${{ inputs.app_private_key }}
         owner: ${{ inputs.repository_owner }}
 
