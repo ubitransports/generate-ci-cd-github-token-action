@@ -1,0 +1,25 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended",
+        "helpers:pinGitHubActionDigests"
+    ],
+    "timezone": "Europe/Paris",
+    "enabledManagers": [
+        "github-actions"
+    ],
+    "packageRules": [
+        {
+            "description": "Group internal modules from /ubitransports",
+            "matchPackagePatterns": [
+                "ubitransports"
+            ],
+            "groupName": "Matawan Modules"
+        }
+    ],
+    "vulnerabilityAlerts": {
+        "enabled": true
+    },
+    "dependencyDashboard": true,
+    "dependencyDashboardAutoclose": true
+}
