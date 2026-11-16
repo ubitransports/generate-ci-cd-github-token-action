@@ -1,0 +1,26 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    runs-on: gha-runner
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Generate a Github App Token
+        id: gh_app_token
+        uses: ubitransports/generate-ci-cd-github-token-action@v3
+        with:
+          app_id: ${{ secrets.APP_ID_CI_CD }}
+          app_private_key: ${{ secrets.APP_PRIVATE_KEY_CI_CD }}
+          repository_owner: ${{ github.repository_owner }}
+
+      - name: Run Release Action
+        uses: ubitransports/automated-release-action@v1
+        with:
+          githubToken: ${{ steps.gh_app_token.outputs.token }}
